@@ -1,7 +1,14 @@
-<div >
-  <ul>
-    <li *ngFor="let profile of profiles$ | async">
-      {{profile.name}}
-    </li>
-  </ul>
+<div id="table">
+  <table style="margin: auto;">
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+    <tr *ngFor="let profile of profiles$ | async">
+      <td> {{profile.id}}</td>
+      <td> {{profile.name}}</td>
+      <td> {{profile.email}}</td>
+    </tr>
+  </table>
 </div>
