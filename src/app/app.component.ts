@@ -25,4 +25,5 @@ export class AppComponent {
       map(([profiles, name]) => profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase())))
     )
   }
+  
 }

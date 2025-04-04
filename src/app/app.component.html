@@ -1,31 +1,33 @@
-<div id="table">
-  <div class="card mt-5">
-    <form [formGroup]="search" style="text-align: center;">
-      <div class="row">
-        <div class="col">
-          <span>Search</span>
-        </div>
+<div id="body">
+  <div id="table" style="padding: 35px;">
+    <div class="card">
+      <form [formGroup]="search" style="text-align: center;">
+        <div class="row">
+          <div class="col" style="align-content: center;">
+            <span>Search</span>
+          </div>
 
-        <div class="col">
-          <label for="Name"></label>
-          <input type="text" formControlName="name">
+          <div class="col">
+            <label for="name">name</label>
+            <input id="name" name="name" type="text" formControlName="name" class="form-control">
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
 
-  <div class="card mt-5">
-    <table style="margin: auto;" class="mt-5">
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-      </tr>
-      <tr *ngFor="let profile of profiles$ | async">
-        <td> {{profile.id}}</td>
-        <td> {{profile.name}}</td>
-        <td> {{profile.email}}</td>
-      </tr>
-    </table>
+    <div class="card mt-5">
+      <table style="margin: auto;" class="mt-5 table w-100">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        <tr *ngFor="let profile of profiles$ | async">
+          <td> {{profile.id}}</td>
+          <td> {{profile.name}}</td>
+          <td> {{profile.email}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
