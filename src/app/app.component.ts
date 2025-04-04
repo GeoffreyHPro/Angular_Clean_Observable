@@ -14,10 +14,15 @@ export class AppComponent {
     name: ['']
   });
 
-  profiles$: Observable<Profile[]> = combineLatest([this.profileService.getProfiles(), this.search.controls.name.valueChanges.pipe(startWith(''))])
-    .pipe(
-      map(([profiles, name]) => profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase())))
-    );
+  profiles$ : Observable<Profile[]> = this.getProfiles();
 
   constructor(private profileService: ProfilesService, private fb: FormBuilder) { }
+
+  private getProfiles(): Observable<Profile[]> {
+    const profiles$ = this.profileService.getProfiles();
+    const searchName$ = this.search.controls.name.valueChanges.pipe(startWith(''));
+    return combineLatest([profiles$, searchName$]).pipe(
+      map(([profiles, name]) => profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase())))
+    )
+  }
 }
