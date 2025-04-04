@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Profile, ProfilesService } from './services/profiles.service';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable, startWith } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,14 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
 
-  profiles$: Observable<Profile[]> = this.profileService.getProfiles();
+  search = this.fb.nonNullable.group({
+    name: ['']
+  });
 
-  constructor(private profileService: ProfilesService){}
+  profiles$: Observable<Profile[]> = combineLatest([this.profileService.getProfiles(), this.search.controls.name.valueChanges.pipe(startWith(''))])
+    .pipe(
+      map(([profiles, name]) => profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase())))
+    );
+
+  constructor(private profileService: ProfilesService, private fb: FormBuilder) { }
 }
