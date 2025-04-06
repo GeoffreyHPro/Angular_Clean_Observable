@@ -11,19 +11,29 @@ import { FormBuilder } from '@angular/forms';
 export class AppComponent {
 
   search = this.fb.nonNullable.group({
-    name: ['']
+    name: [''],
+    email: ['']
   });
 
-  profiles$ : Observable<Profile[]> = this.getProfiles();
+  profiles$: Observable<Profile[]> = this.getProfiles();
 
   constructor(private profileService: ProfilesService, private fb: FormBuilder) { }
 
   private getProfiles(): Observable<Profile[]> {
     const profiles$ = this.profileService.getProfiles();
-    const searchName$ = this.search.controls.name.valueChanges.pipe(startWith(''));
-    return combineLatest([profiles$, searchName$]).pipe(
-      map(([profiles, name]) => profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase())))
+
+    const search$ = combineLatest([
+      this.search.controls.name.valueChanges.pipe(startWith('')),
+      this.search.controls.email.valueChanges.pipe(startWith('')),
+    ])
+
+    return combineLatest([profiles$, search$]).pipe(
+      map(([profiles, [name, email]]) => {
+        const isNameMatching = profiles.filter(profile => profile.name.toLowerCase().includes(name.toLowerCase()));
+        const isEmailMatching = profiles.filter(profile => profile.email.toLowerCase().includes(email.toLowerCase()));
+
+        return isNameMatching && isEmailMatching
+      })
     )
   }
-  
 }
